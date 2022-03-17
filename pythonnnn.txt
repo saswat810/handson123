@@ -1,0 +1,85 @@
+#Product 
+product_id = db.Column(db.Integer,primary_key= True)
+product_name= db.Column(db.String(30),nullable= False,unique= True)
+price= db.Column(db.BigInteger,nullable= False)
+seller_id= db.Column(db.Integer, db.ForeignKey('user.user_id'))
+category_id= db.Column(db.Integer, db.ForeignKey('category.category_id'))
+pc= db.relationship('CartProduct',backref='product')
+
+#category
+category_id = db.Column(db.Integer,primary_key= True)
+category_name= db.Column(db.String(30),nullable= False,unique= True)
+dc= db.relationship('Product',backref='category')
+
+
+#Cart
+cart_id = db.Column(db.Integer,primary_key= True)
+total_amount= db.Column(db.BigInteger,nullable= False)
+user_id= db.Column(db.Integer, db.ForeignKey('user.user_id'))
+cc= db.relationship('CartProduct',backref='cart')
+
+
+
+#Cartproduct
+cp_id = db.Column(db.Integer,primary_key= True)
+cart_id= db.Column(db.Integer, db.ForeignKey('cart.cart_id'))
+product_id= db.Column(db.Integer, db.ForeignKey('product.product_id'))
+quantity = db.Column(db.Integer,nullable= False)
+
+
+#Role
+role_id = db.Column(db.Integer,primary_key= True)
+role_name= db.Column(db.String(30),nullable= False,unique= True)
+rc= db.relationship('User',backref='role',uselist = False)
+
+#User
+user_id = db.Column(db.Integer,primary_key= True)
+user_name= db.Column(db.String(30),nullable= False,unique= True)
+password= db.Column(db.String(30),nullable= False)
+user_role= db.Column(db.Integer, db.ForeignKey('role.role_id'))
+uu= db.relationship('Cart',backref='user',uselist = False)
+
+
+
+#terminal
+from ecommerceapp import db
+from ecommerceapp.models import User,Role,Product,Cart, Category, Cartproduct
+db.create_all()
+
+role1= Role(role_name='CONSUMER')
+role2= Role(role_name='SELLER')
+db.session.add_all([role1,role2])
+db.session.commit()
+
+user1=User(user_name='jack',password='pass_word',user_role=1)
+user2=User(user_name='bob',password='pass_word',user_role=1)
+user3=User(user_name='apple',password='pass_word',user_role=2)
+user4=User(user_name='glaxo',password='pass_word',user_role=2)
+db.session.add_all([user1,user2,user3,user4])
+db.session.commit()
+
+cat1=Category(category_name='Fashion')
+cat2=Category(category_name='Electronics')
+cat3=Category(category_name='Books')
+cat4=Category(category_name='Groceries')
+cat5=Category(category_name='Medicines')
+db.session.add_all([cat1,cat2,cat3,cat4,cat5])
+db.session.commit()
+
+
+car1= Cart(total_amount=20,user_id=1)
+car2= Cart(total_amount=0,user_id=2)
+db.session.add_all([car1,car2])
+db.session.commit()
+
+
+p1=Product(price=29190,product_name='ipad',category_id=2,seller_id=3)
+p2=Product(price=10,product_name='crocin',category_id=5,seller_id=4)
+db.session.add_all([p1,p2])
+db.session.commit()
+
+
+c1=Cartproduct(cart_id=1,product_id=2,quantity=2)
+db.session.add(c1)
+db.session.commit()
+
