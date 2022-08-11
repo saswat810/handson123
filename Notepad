@@ -1,0 +1,56 @@
+let A = [-7, 1, 5, 2, -4, 3, 0]
+
+let A1 =[1, 2, 3]
+
+let A2 =[]
+
+let A3 =[0]
+
+let A4 =[-1, 1]
+
+// const highIndexSum =(index) => {
+//   let sum=0
+//   for(let i= index+1; i<A.length; i++){
+//     sum=sum+A[i]
+//   }
+//   return sum
+// }
+
+// const lowIndexSum =(index) => {
+//   let sum=0
+//   for(let i= 0; i<index; i++){
+//     sum=sum+A[i]
+//   }
+//   return sum
+// }
+
+
+const equiIndex = (A) => {
+  let lengthA = A.length
+  for(let i=1; i<lengthA-1; i++){
+    if(A.slice(0, i).reduce((a,b) => a+b, 0) === A.slice(i+1, lengthA).reduce((a,b) => a+b, 0))     {
+      return i
+    }
+    // if(lowIndexSum(i) === highIndexSum(i)){
+    //   return i
+    // }
+  }
+  return -1 
+}
+
+equiIndex(A)
+
+let result = equiIndex(A)
+console.log(A, "result1", result)
+
+let result1 = equiIndex(A1)
+console.log(A1, "result1", result1)
+
+let result2 = equiIndex(A2)
+console.log(A2, "result", result2)
+
+let result3 = equiIndex(A3)
+console.log(A3, "result", result3)
+
+let result4 = equiIndex(A4)
+console.log(A4, "result", result4)
